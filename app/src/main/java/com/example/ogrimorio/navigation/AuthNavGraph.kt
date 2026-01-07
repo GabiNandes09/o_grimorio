@@ -12,7 +12,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController){
         route = NavConstants.AUTH_GRAPH
     ){
         composable(NavConstants.LOGIN) {
-            LoginUI {  }
+            LoginUI { navController.navigate(NavConstants.MAIN_GRAPH)  }
         }
     }
 }

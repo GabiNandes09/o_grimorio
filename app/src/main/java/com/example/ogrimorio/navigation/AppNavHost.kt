@@ -11,5 +11,6 @@ fun AppNavHost(navController: NavHostController) {
         startDestination = NavConstants.AUTH_GRAPH
     ){
         authNavGraph(navController)
+        mainNavGraph(navController)
     }
 }

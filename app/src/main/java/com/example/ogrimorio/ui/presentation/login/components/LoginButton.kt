@@ -15,7 +15,7 @@ fun LoginButton(
     onClick: () -> Unit
     ) {
     IconButton(
-        onClick = { /* ação */ },
+        onClick = { onClick() },
         modifier = modifier.size(150.dp)
     ) {
         Image(
