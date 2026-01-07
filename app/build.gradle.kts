@@ -28,12 +28,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
+
     buildFeatures {
         compose = true
     }
@@ -56,4 +59,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Koin Core
+    implementation(libs.koin.core)
+    // Koin Android
+    implementation(libs.koin.android)
+    // Koin para Jetpack Compose
+    implementation(libs.koin.androidx.compose)
+    // Dependência do Navigation para Jetpack Compose
+    implementation(libs.androidx.navigation.compose)
+    // DataStore Preferences
+    implementation(libs.androidx.datastore.preferences)
+    // Retrofit
+    implementation(libs.retrofit)
+    // Retrofit + Gson Converter
+    implementation(libs.converter.gson)
 }
