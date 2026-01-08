@@ -17,10 +17,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
+import com.example.ogrimorio.database.dto.CriticalWithRelations
 import com.example.ogrimorio.ui.presentation.animations.TapHint
 import com.example.ogrimorio.ui.presentation.background.BackgroundContainer
 import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
@@ -49,14 +52,22 @@ fun HomeUI() {
 
         val types by viewmodel.types.collectAsState()
         val categories by viewmodel.categories.collectAsState()
+        val criticalRolled by viewmodel.criticalRolled.collectAsState()
+
+        var visibleCritical by remember { mutableStateOf<CriticalWithRelations?>(null) }
+
+        LaunchedEffect(criticalRolled) {
+            if (criticalRolled != null) {
+                visibleCritical = criticalRolled
+            }
+        }
 
         var typeSelected by rememberSaveable { mutableIntStateOf(0) }
-        var categorySelected by rememberSaveable { mutableIntStateOf(-1) }
+        var categorySelected by rememberSaveable { mutableIntStateOf(0) }
 
-        var isSelected by rememberSaveable { mutableStateOf(false) }
+        var isTypeSelected by rememberSaveable { mutableStateOf(false) }
         var canDiceClick by rememberSaveable { mutableStateOf(false) }
         var wasDiceClicked by rememberSaveable { mutableStateOf(false) }
-        var showingCrit by rememberSaveable { mutableStateOf(false) }
 
         val dadaoRes = if (typeSelected == 0) R.drawable.dadao_sucesso else R.drawable.dadao_erro
 
@@ -78,21 +89,21 @@ fun HomeUI() {
                     OptionsBar(
                         options = types,
                         modifier = Modifier.wrapContentSize()
-                    ) { selected ->
-                        typeSelected = selected
-                        isSelected = true
+                    ) { idSelected ->
+                        typeSelected = idSelected
+                        isTypeSelected = true
                     }
 
                     AnimatedVisibility(
-                        visible = isSelected,
+                        visible = isTypeSelected,
                         enter = slideInVertically { -it / 2 } + fadeIn(),
                         exit = slideOutVertically { it / 2 } + fadeOut()
                     ) {
                         OptionsBar(
                             options = categories,
                             modifier = Modifier.wrapContentSize()
-                        ) { selected ->
-                            categorySelected = selected
+                        ) { idSelected ->
+                            categorySelected = idSelected
                             canDiceClick = true
                         }
                     }
@@ -107,9 +118,12 @@ fun HomeUI() {
             ) {
                 IconButton(
                     onClick = {
-                        if (categorySelected >= 0) {
+                        if (categorySelected > 0 && typeSelected > 0) {
                             wasDiceClicked = true
-                            showingCrit = true
+                            viewmodel.makeARoll(
+                                typeSelected,
+                                categorySelected
+                            )
                         }
                     },
                     modifier = Modifier.size(250.dp)
@@ -134,25 +148,28 @@ fun HomeUI() {
                     )
                 }
 
-                if (canDiceClick){
+                if (canDiceClick) {
                     Text(
                         text = "Toque para selar o destino",
                         color = White_Trans
                     )
                 }
             }
-
             AnimatedVisibility(
-                visible = showingCrit,
+                visible = criticalRolled != null,
                 enter = slideInVertically { it },
                 exit = slideOutVertically { it }
             ) {
-                CriticsCard(
-                    onCloseClick = { showingCrit = false },
-                    onRollAgainClick = { }
-                )
+                visibleCritical?.let { critical ->
+                    CriticsCard(
+                        critical = critical,
+                        onCloseClick = { viewmodel.rollReset() },
+                        onRollAgainClick = {
+                            viewmodel.makeARoll(typeSelected, categorySelected)
+                        }
+                    )
+                }
             }
-
         }
     }
 }

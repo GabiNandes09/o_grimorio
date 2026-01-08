@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
 import com.example.ogrimorio.interfaces.OptionItem
@@ -30,7 +29,7 @@ fun OptionsBar(
     columns: Int = 2,
     itemSelected: (Int) -> Unit
 ) {
-    var selectedIndex by rememberSaveable { mutableIntStateOf(-1) }
+    var selectedId by rememberSaveable { mutableIntStateOf(-1) }
 
     val rows = options.chunked(columns)
 
@@ -52,23 +51,22 @@ fun OptionsBar(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            rows.forEachIndexed { rowIndex, row ->
+            rows.forEach { row ->
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    row.forEachIndexed { colIndex, item ->
-                        val index = rowIndex * columns + colIndex
+                    row.forEach { item ->
                         OptionsCell(
                             modifier = Modifier
                                 .width(150.dp)
                                 .height(50.dp),
                             text = item.name,
                             ico = R.drawable.sword_ico,
-                            isChecked = selectedIndex == index,
+                            isChecked = selectedId == item.id,
                             onClick = {
-                                selectedIndex = index
-                                itemSelected(index)
+                                selectedId = item.id ?: 0
+                                itemSelected(selectedId)
                             }
                         )
                     }

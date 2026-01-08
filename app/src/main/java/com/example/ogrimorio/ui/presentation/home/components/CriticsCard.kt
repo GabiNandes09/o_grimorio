@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ogrimorio.R
+import com.example.ogrimorio.database.dto.CriticalWithRelations
 import com.example.ogrimorio.ui.theme.Red
 import com.example.ogrimorio.ui.theme.TryAgainButtonColor
 import com.example.ogrimorio.ui.theme.White
@@ -32,6 +33,7 @@ import com.example.ogrimorio.ui.theme.White
 @Composable
 fun CriticsCard(
     modifier: Modifier = Modifier,
+    critical: CriticalWithRelations,
     onCloseClick: () -> Unit,
     onRollAgainClick: () -> Unit
 ) {
@@ -62,7 +64,7 @@ fun CriticsCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Título",
+                text = critical.critical.name,
                 color = Red,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
@@ -70,7 +72,7 @@ fun CriticsCard(
                 modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp)
             )
             Text(
-                text = "DescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescriçãoDescrição",
+                text = critical.critical.effect,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge,
