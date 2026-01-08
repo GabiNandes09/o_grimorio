@@ -21,11 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
+import com.example.ogrimorio.interfaces.OptionItem
 
 @Composable
 fun OptionsBar(
     modifier: Modifier = Modifier,
-    options: List<String>,
+    options: List<OptionItem>,
     columns: Int = 2,
     itemSelected: (Int) -> Unit
 ) {
@@ -62,7 +63,7 @@ fun OptionsBar(
                             modifier = Modifier
                                 .width(150.dp)
                                 .height(50.dp),
-                            text = item,
+                            text = item.name,
                             ico = R.drawable.sword_ico,
                             isChecked = selectedIndex == index,
                             onClick = {
@@ -75,14 +76,4 @@ fun OptionsBar(
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-private fun Preview() {
-    OptionsBar(
-        modifier = Modifier,
-        options = listOf("Teste1", "Teste2")
-    ) { }
 }

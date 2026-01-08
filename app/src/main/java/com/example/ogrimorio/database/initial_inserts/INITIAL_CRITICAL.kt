@@ -1,7 +1,7 @@
 package com.example.ogrimorio.database.initial_inserts
 
 const val INITIAL_CRITICAL = """
-        INSERT INTO CriticalEntity (name, effect, type_id, category_id) VALUES 
+        INSERT INTO Criticals (name, effect, type_id, category_id) VALUES 
 ('Tendão rompido', 'A iniciativa do alvo se torna 0, a partir do proximo turno', 1, 1),
 ('Coxa furada', 'A iniciativa do alvo se torna 0, a partir do proximo turno', 1, 2),
 ('Pancada no joelho', 'A iniciativa do alvo se torna 0, a partir do proximo turno', 1, 3),

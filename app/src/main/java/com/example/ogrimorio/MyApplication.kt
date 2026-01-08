@@ -2,6 +2,8 @@ package com.example.ogrimorio
 
 import android.app.Application
 import com.example.ogrimorio.modules.databaseModule
+import com.example.ogrimorio.modules.repositoryModule
+import com.example.ogrimorio.modules.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -13,7 +15,7 @@ class MyApplication: Application() {
         startKoin{
             androidLogger()
             androidContext(this@MyApplication)
-            modules(databaseModule)
+            modules(databaseModule, repositoryModule, viewModelModule)
         }
     }
 }

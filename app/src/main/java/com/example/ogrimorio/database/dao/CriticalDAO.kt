@@ -11,7 +11,7 @@ import com.example.ogrimorio.database.entity.CriticalEntity
 interface CriticalDao {
 
     @Transaction
-    @Query("SELECT * FROM critical")
+    @Query("SELECT * FROM Criticals")
     suspend fun getAllWithRelations(): List<CriticalWithRelations>
 
     @Insert

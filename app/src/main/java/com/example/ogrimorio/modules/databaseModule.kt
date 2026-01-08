@@ -14,7 +14,7 @@ val databaseModule = module {
         )
             .addCallback(AppDatabase.SeedCallback(androidContext()))
             .addMigrations()
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 

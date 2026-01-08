@@ -8,21 +8,16 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,33 +36,29 @@ import com.example.ogrimorio.ui.presentation.background.BackgroundContainer
 import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
 import com.example.ogrimorio.ui.presentation.home.components.OptionsBar
 import com.example.ogrimorio.ui.presentation.home.components.TitleHome
-import com.example.ogrimorio.ui.theme.White
 import com.example.ogrimorio.ui.theme.White_Trans
+import com.example.ogrimorio.viewmodel.HomeViewmodel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeUI() {
     BackgroundContainer(
         backgroundRes = R.drawable.fundo
     ) {
+        val viewmodel = koinViewModel<HomeViewmodel>()
+
+        val types by viewmodel.types.collectAsState()
+        val categories by viewmodel.categories.collectAsState()
+
         var typeSelected by rememberSaveable { mutableIntStateOf(0) }
         var categorySelected by rememberSaveable { mutableIntStateOf(-1) }
+
         var isSelected by rememberSaveable { mutableStateOf(false) }
         var canDiceClick by rememberSaveable { mutableStateOf(false) }
         var wasDiceClicked by rememberSaveable { mutableStateOf(false) }
         var showingCrit by rememberSaveable { mutableStateOf(false) }
 
         val dadaoRes = if (typeSelected == 0) R.drawable.dadao_sucesso else R.drawable.dadao_erro
-
-        val firstOptions = listOf(
-            "Acerto",
-            "Erro"
-        )
-
-        val secondOptions = listOf(
-            "Concussão",
-            "Perfurante",
-            "Cortante"
-        )
 
         Scaffold(
             containerColor = Color.Transparent,
@@ -85,7 +76,7 @@ fun HomeUI() {
                 ) {
 
                     OptionsBar(
-                        options = firstOptions,
+                        options = types,
                         modifier = Modifier.wrapContentSize()
                     ) { selected ->
                         typeSelected = selected
@@ -98,7 +89,7 @@ fun HomeUI() {
                         exit = slideOutVertically { it / 2 } + fadeOut()
                     ) {
                         OptionsBar(
-                            options = secondOptions,
+                            options = categories,
                             modifier = Modifier.wrapContentSize()
                         ) { selected ->
                             categorySelected = selected
