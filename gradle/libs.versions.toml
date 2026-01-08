@@ -1,5 +1,6 @@
 [versions]
 agp = "8.11.2"
+coreSplashscreen = "1.2.0"
 kotlin = "2.3.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -13,9 +14,11 @@ datastorePreferences = "1.2.0"
 koinCore = "4.1.1"
 navigationCompose = "2.9.6"
 retrofit = "3.0.0"
+roomRuntime = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -36,6 +39,14 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinCore
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCore" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-room-guava = { module = "androidx.room:room-guava", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomRuntime" }
+androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "roomRuntime" }
+androidx-room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRuntime" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomRuntime" }
 
 
 [plugins]
