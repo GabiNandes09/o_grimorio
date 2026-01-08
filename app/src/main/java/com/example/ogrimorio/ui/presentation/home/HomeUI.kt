@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,7 +71,7 @@ fun HomeUI() {
         var canDiceClick by rememberSaveable { mutableStateOf(false) }
         var wasDiceClicked by rememberSaveable { mutableStateOf(false) }
 
-        val dadaoRes = if (typeSelected == 0) R.drawable.dadao_sucesso else R.drawable.dadao_erro
+        val dadaoRes = if (typeSelected == 1) R.drawable.dadao_sucesso else R.drawable.dadao_erro
 
         Scaffold(
             containerColor = Color.Transparent,
@@ -90,8 +92,8 @@ fun HomeUI() {
                         options = types,
                         modifier = Modifier.wrapContentSize()
                     ) { idSelected ->
-                        typeSelected = idSelected
                         isTypeSelected = true
+                        typeSelected = idSelected
                     }
 
                     AnimatedVisibility(
@@ -155,6 +157,21 @@ fun HomeUI() {
                     )
                 }
             }
+            if (criticalRolled != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.4f))
+                        .pointerInput(Unit) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    awaitPointerEvent()
+                                }
+                            }
+                        }
+                )
+            }
+
             AnimatedVisibility(
                 visible = criticalRolled != null,
                 enter = slideInVertically { it },

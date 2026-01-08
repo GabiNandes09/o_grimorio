@@ -18,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
+import com.example.ogrimorio.database.entity.TypeEntity
 import com.example.ogrimorio.interfaces.OptionItem
 
 @Composable
@@ -59,8 +61,8 @@ fun OptionsBar(
                     row.forEach { item ->
                         OptionsCell(
                             modifier = Modifier
-                                .width(150.dp)
-                                .height(50.dp),
+                                .width(160.dp)
+                                .height(60.dp),
                             text = item.name,
                             ico = R.drawable.sword_ico,
                             isChecked = selectedId == item.id,
@@ -74,4 +76,13 @@ fun OptionsBar(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    OptionsBar(
+        options = listOf(TypeEntity(1, "Ataque a distanciaaaaaaaaaaaaa"))
+    ) { }
+    
 }

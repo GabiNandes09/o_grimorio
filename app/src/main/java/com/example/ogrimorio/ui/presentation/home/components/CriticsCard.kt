@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -22,10 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ogrimorio.R
 import com.example.ogrimorio.database.dto.CriticalWithRelations
+import com.example.ogrimorio.database.entity.CategoryEntity
+import com.example.ogrimorio.database.entity.CriticalEntity
+import com.example.ogrimorio.database.entity.TypeEntity
 import com.example.ogrimorio.ui.theme.Red
 import com.example.ogrimorio.ui.theme.TryAgainButtonColor
 import com.example.ogrimorio.ui.theme.White
@@ -45,32 +50,39 @@ fun CriticsCard(
             contentDescription = null
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            IconButton(
-                onClick = { onCloseClick() },
-                modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.x_metal_ico),
-                    contentDescription = null
-                )
-            }
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = critical.critical.name,
-                color = Red,
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 30.dp, start = 10.dp, end = 10.dp)
-            )
+            Row(
+                modifier = Modifier.padding(top = 30.dp, start = 20.dp, end = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = { onRollAgainClick() }
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.refresh_ico),
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
+                Text(
+                    text = critical.critical.name,
+                    color = Red,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(
+                    onClick = { onCloseClick() }
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.x_metal_ico),
+                        contentDescription = null
+                    )
+                }
+            }
             Text(
                 text = critical.critical.effect,
                 fontSize = 20.sp,
@@ -84,20 +96,19 @@ fun CriticsCard(
                     .padding(vertical = 30.dp, horizontal = 25.dp),
 
                 )
-            Button(
-                onClick = { onRollAgainClick() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 15.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = TryAgainButtonColor
-                )
-            ) {
-                Text(
-                    text = "Rolar de novo",
-                    color = White
-                )
-            }
         }
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    CriticsCard(
+        critical = CriticalWithRelations(
+            CriticalEntity(1, "TESTE", "Teste EFeito", 1, 2),
+            TypeEntity(1, "Tipo"),
+            CategoryEntity(1, "Categoria"),
+        ),
+        onCloseClick = {}
+    ) { }
 }
