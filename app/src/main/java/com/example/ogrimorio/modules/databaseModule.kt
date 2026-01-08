@@ -20,4 +20,5 @@ val databaseModule = module {
 
     factory { get<AppDatabase>().TypeDAO() }
     factory { get<AppDatabase>().CategoryDAO() }
+    factory { get<AppDatabase>().CriticalDao() }
 }

@@ -8,7 +8,7 @@ import com.example.ogrimorio.database.entity.TypeEntity
 @Dao
 interface TypeDAO {
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertType(type: TypeEntity)
+    suspend fun insertType(type: TypeEntity) : Long
 
     @Insert
     suspend fun insertAll(list: List<TypeEntity>)

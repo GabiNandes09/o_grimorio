@@ -7,5 +7,5 @@ import com.example.ogrimorio.database.entity.CategoryEntity
 @Dao
 interface CategoryDAO {
     @Insert
-    suspend fun insertCategory(category: CategoryEntity)
+    suspend fun insertCategory(category: CategoryEntity) : Long
 }
