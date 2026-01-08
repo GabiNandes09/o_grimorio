@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,6 +41,8 @@ import com.example.ogrimorio.ui.presentation.background.BackgroundContainer
 import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
 import com.example.ogrimorio.ui.presentation.home.components.OptionsBar
 import com.example.ogrimorio.ui.presentation.home.components.TitleHome
+import com.example.ogrimorio.ui.theme.White
+import com.example.ogrimorio.ui.theme.White_Trans
 
 @Composable
 fun HomeUI() {
@@ -136,7 +139,14 @@ fun HomeUI() {
                     TapHint(
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .offset(x = 50.dp, y = 50.dp)
+                            .offset(x = 50.dp, y = (-30).dp)
+                    )
+                }
+
+                if (canDiceClick){
+                    Text(
+                        text = "Toque para selar o destino",
+                        color = White_Trans
                     )
                 }
             }

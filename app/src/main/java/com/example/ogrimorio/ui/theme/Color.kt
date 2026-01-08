@@ -12,4 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val TryAgainButtonColor = Color(0xFF150A36)
 val White = Color(0xFFFFFFFF)
+val White_Trans = Color(0x70FFFFFF)
 val Red = Color(0xFF860E0E)
