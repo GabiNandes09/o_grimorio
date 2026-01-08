@@ -8,12 +8,17 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -27,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
 import com.example.ogrimorio.ui.presentation.animations.TapHint
@@ -64,43 +70,46 @@ fun HomeUI() {
             containerColor = Color.Transparent,
             topBar = { TitleHome() }
         ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OptionsBar(
-                    options = firstOptions,
-                    modifier = Modifier
-                        .height(80.dp)
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                ) { selected ->
-                    typeSelected = selected
-                    isSelected = true
-                }
-                AnimatedVisibility(
-                    visible = isSelected,
-                    enter = slideInVertically { -it / 2 } + fadeIn(),
-                    exit = slideOutVertically { it / 2 } + fadeOut()
-                ) {
-                    OptionsBar(
-                        options = secondOptions,
-                        modifier = Modifier
-                            .height(60.dp)
-                            .fillMaxWidth()
-                    ) { selected ->
-                        categorySelected = selected
-                        canDiceClick = true
-                    }
-                }
-
-            }
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Column(
+                    modifier = Modifier.wrapContentSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    OptionsBar(
+                        options = firstOptions,
+                        modifier = Modifier.wrapContentSize()
+                    ) { selected ->
+                        typeSelected = selected
+                        isSelected = true
+                    }
+
+                    AnimatedVisibility(
+                        visible = isSelected,
+                        enter = slideInVertically { -it / 2 } + fadeIn(),
+                        exit = slideOutVertically { it / 2 } + fadeOut()
+                    ) {
+                        OptionsBar(
+                            options = secondOptions,
+                            modifier = Modifier.wrapContentSize()
+                        ) { selected ->
+                            categorySelected = selected
+                            canDiceClick = true
+                        }
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .offset(y = (-30).dp),
+                contentAlignment = Alignment.BottomCenter
             ) {
                 IconButton(
                     onClick = {
@@ -145,4 +154,10 @@ fun HomeUI() {
 
         }
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    HomeUI()
 }
