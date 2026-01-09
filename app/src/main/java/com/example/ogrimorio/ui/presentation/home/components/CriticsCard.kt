@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -58,11 +60,13 @@ fun CriticsCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    onClick = { onRollAgainClick() }
+                    onClick = { onRollAgainClick() },
+                    shape = RectangleShape
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.refresh_ico),
+                        painter = painterResource(R.drawable.rerrole_ico),
                         contentDescription = null,
+                        contentScale = ContentScale.Fit,
                         modifier = Modifier.size(50.dp)
                     )
                 }
