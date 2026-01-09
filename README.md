@@ -32,7 +32,7 @@ Os efeitos são curados manualmente com temática medieval e mágica, priorizand
 
 | Tela Inicial | Seleção de Categoria | Efeito Gerado |
 |-------------|---------------------|---------------|
-| ![Home](assets/print_tela_inicial.jpg) | ![Seleção](assets/print_3.jpg) | ![Resultado](assets/print_critico.jpg) |
+| ![Home](screenshots/print_tela_inicial.jpg) | ![Seleção](screenshots/print_3.jpg) | ![Resultado](screenshots/print_critico.jpg) |
 
 ## 🛠 Tech Stack & Arquitetura
 
@@ -56,7 +56,7 @@ Os efeitos são curados manualmente com temática medieval e mágica, priorizand
 ### Instalação
 
 ```bash
-git clone https://github.com/SEU-USUARIO/o-grimorio.git
+git clone https://github.com/GabiNandes09/o_grimorio.git
 ```
 
 Abra o projeto no Android Studio, aguarde a sincronização do Gradle e execute o aplicativo.
