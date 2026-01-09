@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,8 +43,10 @@ import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
 import com.example.ogrimorio.ui.presentation.home.components.OptionsBar
 import com.example.ogrimorio.ui.presentation.home.components.TitleHome
 import com.example.ogrimorio.ui.theme.White_Trans
+import com.example.ogrimorio.util.SoundEffectPlayer
 import com.example.ogrimorio.viewmodel.HomeViewmodel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
 fun HomeUI() {
@@ -51,6 +54,7 @@ fun HomeUI() {
         backgroundRes = R.drawable.fundo
     ) {
         val viewmodel = koinViewModel<HomeViewmodel>()
+        val soundPlayer = koinInject<SoundEffectPlayer>()
 
         val types by viewmodel.types.collectAsState()
         val categories by viewmodel.categories.collectAsState()
@@ -61,6 +65,12 @@ fun HomeUI() {
         LaunchedEffect(criticalRolled) {
             if (criticalRolled != null) {
                 visibleCritical = criticalRolled
+            }
+        }
+
+        DisposableEffect(Unit) {
+            onDispose {
+                soundPlayer.release()
             }
         }
 
@@ -121,6 +131,7 @@ fun HomeUI() {
                 IconButton(
                     onClick = {
                         if (categorySelected > 0 && typeSelected > 0) {
+                            soundPlayer.playRollDice()
                             wasDiceClicked = true
                             viewmodel.makeARoll(
                                 typeSelected,
@@ -182,6 +193,7 @@ fun HomeUI() {
                         critical = critical,
                         onCloseClick = { viewmodel.rollReset() },
                         onRollAgainClick = {
+                            soundPlayer.playRollDice()
                             viewmodel.makeARoll(typeSelected, categorySelected)
                         }
                     )
