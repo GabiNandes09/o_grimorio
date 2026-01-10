@@ -17,10 +17,14 @@ fun LoginUI(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
-        TitleLogin()
-        LoginButton {
+        TitleLogin(
+            Modifier.weight(0.4f)
+        )
+        LoginButton(
+            Modifier.weight(0.6f)
+        ) {
             onLoginSucess()
         }
     }

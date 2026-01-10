@@ -40,7 +40,12 @@ fun DrawerDefault(
 
                 Spacer(Modifier.height(16.dp))
 
-                DrawerContent { onOptionClick(it) }
+                DrawerContent {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    onOptionClick(it)
+                }
             }
         }
     ) {
@@ -58,6 +63,7 @@ fun DrawerContent(
     onNavigate: (String) -> Unit
 ) {
     val options = listOf(
+        DrawerItem("Críticos", NavConstants.MAIN_GRAPH),
         DrawerItem("Personalizar", NavConstants.PERSONALIZAR),
         DrawerItem("Histórico", NavConstants.HISTÓRICO),
         DrawerItem("Gerenciar", NavConstants.GERENCIAR),

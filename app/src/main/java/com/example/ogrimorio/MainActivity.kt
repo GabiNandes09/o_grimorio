@@ -11,14 +11,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.rememberNavController
+import com.example.ogrimorio.datastore.AppPreferences
 import com.example.ogrimorio.navigation.AppNavHost
 import com.example.ogrimorio.ui.presentation.background.BackgroundContainer
 import com.example.ogrimorio.ui.presentation.components.DrawerDefault
 import com.example.ogrimorio.ui.theme.OGrimorioTheme
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -26,10 +30,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val prefs = koinInject<AppPreferences>()
+
+            val backgroundId by prefs.backgroundId.collectAsState(R.drawable.fundo)
 
             OGrimorioTheme {
                 BackgroundContainer(
-                    backgroundRes = R.drawable.fundo
+                    backgroundRes = backgroundId
                 ) {
                     DrawerDefault(
                         modifier = Modifier.wrapContentWidth(),

@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
 import com.example.ogrimorio.database.dto.CriticalWithRelations
+import com.example.ogrimorio.datastore.AppPreferences
 import com.example.ogrimorio.ui.presentation.animations.TapHint
 import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
 import com.example.ogrimorio.ui.presentation.home.components.OptionsBar
@@ -51,10 +52,12 @@ import org.koin.compose.koinInject
 fun HomeUI() {
     val viewmodel = koinViewModel<HomeViewmodel>()
     val soundPlayer = koinInject<SoundEffectPlayer>()
+    val prefs = koinInject<AppPreferences>()
 
     val types by viewmodel.types.collectAsState()
     val categories by viewmodel.categories.collectAsState()
     val criticalRolled by viewmodel.criticalRolled.collectAsState()
+    val soundOn by prefs.soundMode.collectAsState(true)
 
     var visibleCritical by remember { mutableStateOf<CriticalWithRelations?>(null) }
 
@@ -127,7 +130,7 @@ fun HomeUI() {
             IconButton(
                 onClick = {
                     if (categorySelected > 0 && typeSelected > 0) {
-                        soundPlayer.playRollDice()
+                        if (soundOn) soundPlayer.playRollDice()
                         wasDiceClicked = true
                         viewmodel.makeARoll(
                             typeSelected,
@@ -189,7 +192,7 @@ fun HomeUI() {
                     critical = critical,
                     onCloseClick = { viewmodel.rollReset() },
                     onRollAgainClick = {
-                        soundPlayer.playRollDice()
+                        if (soundOn) soundPlayer.playRollDice()
                         viewmodel.makeARoll(typeSelected, categorySelected)
                     }
                 )
