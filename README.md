@@ -68,8 +68,8 @@ Abra o projeto no Android Studio, aguarde a sincronização do Gradle e execute 
 O Grimório foi concebido para escalar. O planejamento futuro visa transformar o app de uma ferramenta *offline* para uma plataforma de conteúdo comunitário e analítico.
 
 ### Curto Prazo (UX e Personalização)
-* [ ] **Feedback Sonoro:** Implementação de efeitos de áudio (SFX) para interações de UI e momento do sorteio ("Roll").
-* [ ] **Personalização de Temas:** Permitir que o usuário altere o background da aplicação (presets iniciais e upload de imagem customizada).
+* [X] **Feedback Sonoro:** Implementação de efeitos de áudio (SFX) para interações de UI e momento do sorteio ("Roll").
+* [X] **Personalização de Temas:** Permitir que o usuário altere o background da aplicação (presets iniciais e upload de imagem customizada).
 * [ ] **Histórico de Combate:** Log local das últimas rolagens efetuadas para consulta rápida.
 
 ### Médio Prazo (Gerenciamento de Dados & Analytics)
