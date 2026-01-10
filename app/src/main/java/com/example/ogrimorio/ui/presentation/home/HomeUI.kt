@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import com.example.ogrimorio.R
 import com.example.ogrimorio.database.dto.CriticalWithRelations
 import com.example.ogrimorio.ui.presentation.animations.TapHint
-import com.example.ogrimorio.ui.presentation.background.BackgroundContainer
 import com.example.ogrimorio.ui.presentation.home.components.CriticsCard
 import com.example.ogrimorio.ui.presentation.home.components.OptionsBar
 import com.example.ogrimorio.ui.presentation.home.components.TitleHome
@@ -50,154 +49,150 @@ import org.koin.compose.koinInject
 
 @Composable
 fun HomeUI() {
-    BackgroundContainer(
-        backgroundRes = R.drawable.fundo
-    ) {
-        val viewmodel = koinViewModel<HomeViewmodel>()
-        val soundPlayer = koinInject<SoundEffectPlayer>()
+    val viewmodel = koinViewModel<HomeViewmodel>()
+    val soundPlayer = koinInject<SoundEffectPlayer>()
 
-        val types by viewmodel.types.collectAsState()
-        val categories by viewmodel.categories.collectAsState()
-        val criticalRolled by viewmodel.criticalRolled.collectAsState()
+    val types by viewmodel.types.collectAsState()
+    val categories by viewmodel.categories.collectAsState()
+    val criticalRolled by viewmodel.criticalRolled.collectAsState()
 
-        var visibleCritical by remember { mutableStateOf<CriticalWithRelations?>(null) }
+    var visibleCritical by remember { mutableStateOf<CriticalWithRelations?>(null) }
 
-        LaunchedEffect(criticalRolled) {
-            if (criticalRolled != null) {
-                visibleCritical = criticalRolled
-            }
+    LaunchedEffect(criticalRolled) {
+        if (criticalRolled != null) {
+            visibleCritical = criticalRolled
         }
+    }
 
-        DisposableEffect(Unit) {
-            onDispose {
-                soundPlayer.release()
-            }
+    DisposableEffect(Unit) {
+        onDispose {
+            soundPlayer.release()
         }
+    }
 
-        var typeSelected by rememberSaveable { mutableIntStateOf(0) }
-        var categorySelected by rememberSaveable { mutableIntStateOf(0) }
+    var typeSelected by rememberSaveable { mutableIntStateOf(0) }
+    var categorySelected by rememberSaveable { mutableIntStateOf(0) }
 
-        var isTypeSelected by rememberSaveable { mutableStateOf(false) }
-        var canDiceClick by rememberSaveable { mutableStateOf(false) }
-        var wasDiceClicked by rememberSaveable { mutableStateOf(false) }
+    var isTypeSelected by rememberSaveable { mutableStateOf(false) }
+    var canDiceClick by rememberSaveable { mutableStateOf(false) }
+    var wasDiceClicked by rememberSaveable { mutableStateOf(false) }
 
-        val dadaoRes = if (typeSelected == 1) R.drawable.dadao_sucesso else R.drawable.dadao_erro
+    val dadaoRes = if (typeSelected == 1) R.drawable.dadao_sucesso else R.drawable.dadao_erro
 
-        Scaffold(
-            containerColor = Color.Transparent,
-            topBar = { TitleHome() }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(),
-                contentAlignment = Alignment.TopCenter
+    Scaffold(
+        containerColor = Color.Transparent,
+        topBar = { TitleHome() }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            Column(
+                modifier = Modifier.wrapContentSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.wrapContentSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
 
+                OptionsBar(
+                    options = types,
+                    modifier = Modifier.wrapContentSize()
+                ) { idSelected ->
+                    isTypeSelected = true
+                    typeSelected = idSelected
+                }
+
+                AnimatedVisibility(
+                    visible = isTypeSelected,
+                    enter = slideInVertically { -it / 2 } + fadeIn(),
+                    exit = slideOutVertically { it / 2 } + fadeOut()
+                ) {
                     OptionsBar(
-                        options = types,
+                        options = categories,
                         modifier = Modifier.wrapContentSize()
                     ) { idSelected ->
-                        isTypeSelected = true
-                        typeSelected = idSelected
-                    }
-
-                    AnimatedVisibility(
-                        visible = isTypeSelected,
-                        enter = slideInVertically { -it / 2 } + fadeIn(),
-                        exit = slideOutVertically { it / 2 } + fadeOut()
-                    ) {
-                        OptionsBar(
-                            options = categories,
-                            modifier = Modifier.wrapContentSize()
-                        ) { idSelected ->
-                            categorySelected = idSelected
-                            canDiceClick = true
-                        }
+                        categorySelected = idSelected
+                        canDiceClick = true
                     }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .offset(y = (-30).dp),
-                contentAlignment = Alignment.BottomCenter
+        }
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .offset(y = (-30).dp),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            IconButton(
+                onClick = {
+                    if (categorySelected > 0 && typeSelected > 0) {
+                        soundPlayer.playRollDice()
+                        wasDiceClicked = true
+                        viewmodel.makeARoll(
+                            typeSelected,
+                            categorySelected
+                        )
+                    }
+                },
+                modifier = Modifier.size(250.dp)
             ) {
-                IconButton(
-                    onClick = {
-                        if (categorySelected > 0 && typeSelected > 0) {
-                            soundPlayer.playRollDice()
-                            wasDiceClicked = true
-                            viewmodel.makeARoll(
-                                typeSelected,
-                                categorySelected
-                            )
-                        }
-                    },
-                    modifier = Modifier.size(250.dp)
-                ) {
-                    Image(
-                        painter = painterResource(dadaoRes),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(250.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-                AnimatedVisibility(
-                    visible = canDiceClick && !wasDiceClicked,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    TapHint(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .offset(x = 50.dp, y = (-30).dp)
-                    )
-                }
-
-                if (canDiceClick) {
-                    Text(
-                        text = "Toque para selar o destino",
-                        color = White_Trans
-                    )
-                }
-            }
-            if (criticalRolled != null) {
-                Box(
+                Image(
+                    painter = painterResource(dadaoRes),
+                    contentDescription = null,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.4f))
-                        .pointerInput(Unit) {
-                            awaitPointerEventScope {
-                                while (true) {
-                                    awaitPointerEvent()
-                                }
-                            }
-                        }
+                        .size(250.dp),
+                    contentScale = ContentScale.Fit
+                )
+            }
+            AnimatedVisibility(
+                visible = canDiceClick && !wasDiceClicked,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                TapHint(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(x = 50.dp, y = (-30).dp)
                 )
             }
 
-            AnimatedVisibility(
-                visible = criticalRolled != null,
-                enter = slideInVertically { it },
-                exit = slideOutVertically { it }
-            ) {
-                visibleCritical?.let { critical ->
-                    CriticsCard(
-                        critical = critical,
-                        onCloseClick = { viewmodel.rollReset() },
-                        onRollAgainClick = {
-                            soundPlayer.playRollDice()
-                            viewmodel.makeARoll(typeSelected, categorySelected)
+            if (canDiceClick) {
+                Text(
+                    text = "Toque para selar o destino",
+                    color = White_Trans
+                )
+            }
+        }
+        if (criticalRolled != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+                    .pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            while (true) {
+                                awaitPointerEvent()
+                            }
                         }
-                    )
-                }
+                    }
+            )
+        }
+
+        AnimatedVisibility(
+            visible = criticalRolled != null,
+            enter = slideInVertically { it },
+            exit = slideOutVertically { it }
+        ) {
+            visibleCritical?.let { critical ->
+                CriticsCard(
+                    critical = critical,
+                    onCloseClick = { viewmodel.rollReset() },
+                    onRollAgainClick = {
+                        soundPlayer.playRollDice()
+                        viewmodel.makeARoll(typeSelected, categorySelected)
+                    }
+                )
             }
         }
     }

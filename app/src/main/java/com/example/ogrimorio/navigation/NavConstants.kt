@@ -7,4 +7,8 @@ object NavConstants {
     const val LOGIN = "LOGIN"
 
     const val HOME = "HOME"
+    const val PERSONALIZAR = "PERSONALIZAR"
+    const val HISTÓRICO = "HISTÓRICO"
+    const val GERENCIAR = "GERENCIAR"
+    const val ESTATÍSTICAS = "ESTATÍSTICAS"
 }
